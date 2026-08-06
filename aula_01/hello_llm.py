@@ -9,6 +9,7 @@ if not os.getenv("GROQ_API_KEY"):
 client = Groq()
 
 chat_completion = client.chat.completions.create(
+    model = "openai/gpt-oss-120b",  
     messages=[{"role": "user", "content": "Qual a capital do Brasil?"}],
     model = "openai/gpt-oss-120b",  
 )
