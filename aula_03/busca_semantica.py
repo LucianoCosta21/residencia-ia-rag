@@ -5,9 +5,6 @@ import re
 import json
 import os
 
-
-
-arquivos_md = glob.glob("../aula_02/documentos_markdown/*.md")
 model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 
 def get_embeddings(texto):
@@ -63,6 +60,7 @@ def dividir_por_capitulo(texto: str):
     return [c for c in capitulos if c.strip() != ""]
 
 def gerar_embeddings(precisao: str):
+   arquivos_md = glob.glob("../aula_02/documentos_markdown/*.md")
 
    divisao = {
       "linha": dividir_por_linhas,
@@ -84,15 +82,19 @@ def gerar_embeddings(precisao: str):
             "origem": caminho,
             "embedding": get_embeddings(trecho),
       })
-      os.makedirs("arquivos_json", exist_ok=True)   
-      caminho_de_saida = os.path.join("arquivos_json",  f"embeddings_{precisao}.json")
-      if not os.path.exists(caminho_de_saida):
-        with open(caminho_de_saida, "w", encoding="utf-8") as f:
-            json.dump(registros, f, ensure_ascii=False, indent=2)
+         
+   os.makedirs("arquivos_json", exist_ok=True)   
+   caminho_de_saida = os.path.join("arquivos_json",  f"embeddings_{precisao}.json")
+   if not os.path.exists(caminho_de_saida):
+    with open(caminho_de_saida, "w", encoding="utf-8") as f:
+       json.dump(registros, f, ensure_ascii=False, indent=2)
 
-        print(f"[{precisao}] {len(registros)} trechos indexados -> {caminho_de_saida}")
-      else:
-        print(f"O arquivo já existe e não foi sobrescrito: {caminho_de_saida}") 
+       print(f"[{precisao}] {len(registros)} trechos indexados -> {caminho_de_saida}")
+   else:
+       print(f"O arquivo já existe e não foi sobrescrito: {caminho_de_saida}") 
+
+
+
 
 def buscar_semantica(query: str, precisao:str, top_n: int = 3):
     caminho_de_entrada = os.path.join("arquivos_json", f"embeddings_{precisao}.json" )
