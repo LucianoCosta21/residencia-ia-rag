@@ -60,8 +60,16 @@ def dividir_por_capitulo(texto: str):
     return [c for c in capitulos if c.strip() != ""]
 
 def gerar_embeddings(precisao: str):
-   arquivos_md = glob.glob("../aula_02/documentos_markdown/*.md")
+   os.makedirs("arquivos_json", exist_ok=True)   
+   caminho_de_saida = os.path.join("arquivos_json",  f"embeddings_{precisao}.json")
 
+   if os.path.exists(caminho_de_saida):
+      print(f"O arquivo já existe e não foi sobrescrito: {caminho_de_saida}")
+      return 
+    
+
+   print("Saiu da função")
+   arquivos_md = glob.glob("../aula_02/documentos_markdown/*.md")
    divisao = {
       "linha": dividir_por_linhas,
       "paragrafo": dividir_por_paragrafo,
@@ -83,17 +91,10 @@ def gerar_embeddings(precisao: str):
             "embedding": get_embeddings(trecho),
       })
          
-   os.makedirs("arquivos_json", exist_ok=True)   
-   caminho_de_saida = os.path.join("arquivos_json",  f"embeddings_{precisao}.json")
-   if not os.path.exists(caminho_de_saida):
-    with open(caminho_de_saida, "w", encoding="utf-8") as f:
+   with open(caminho_de_saida, "w", encoding="utf-8") as f:
        json.dump(registros, f, ensure_ascii=False, indent=2)
-
        print(f"[{precisao}] {len(registros)} trechos indexados -> {caminho_de_saida}")
-   else:
-       print(f"O arquivo já existe e não foi sobrescrito: {caminho_de_saida}") 
-
-
+   print("está aqui")
 
 
 def buscar_semantica(query: str, precisao:str, top_n: int = 3):

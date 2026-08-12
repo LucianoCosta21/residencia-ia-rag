@@ -5,6 +5,7 @@ source = ["bioetica_e_ia.pdf","escrita_academica_ia.pdf","twitter_algoritmo.pdf"
 
 os.makedirs("documentos_markdown", exist_ok=True)
 converter = DocumentConverter()
+
 def extrator_pdf():
     for doc in source:
         try:
