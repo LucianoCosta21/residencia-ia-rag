@@ -8,10 +8,6 @@ import nltk
 nltk.download('punkt')
 nltk.download("punkt_tab")
 
-
-
-arquivos_md = glob.glob("../aula_02/documentos_markdown/*.md")
-
 testes = {
     1: {"strategy": "fixed","size": 200, "overlap": 0,"type": "fixed", "separators": None},
     2: {"strategy": "fixed","size": 500, "overlap": 0,"type": "fixed", "separators": None},
@@ -55,7 +51,6 @@ def gerar_chunks_sentenca(texto: str):
          todas_sentencas.extend(bloco.split("\n"))
 
     todas_sentencas = [s.strip() for s in todas_sentencas if s.strip()]
-
 
     chunks = []
     metadatas = []
@@ -134,8 +129,8 @@ def salvar_json(caminho, dados):
      with open(caminho, "w", encoding="utf-8") as f:
           json.dump(dados, f, ensure_ascii=False, indent=2)
            
-def rodar_pipeline():
-     arquivos_md = glob.glob("documentos_markdown/*.md")
+def rodar_pipeline(arquivos_md: list):
+    
      summary_por_documento = {}
 
      for caminho in arquivos_md:
@@ -198,7 +193,8 @@ def rodar_pipeline():
 
 
 if __name__ == "__main__":
-    rodar_pipeline()
+    arquivos_md = glob.glob("documentos_markdown/*.md")
+    rodar_pipeline(arquivos_md)
 
 
 
